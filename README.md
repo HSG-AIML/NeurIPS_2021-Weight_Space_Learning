@@ -23,6 +23,7 @@ Several packages are necessary to run the code in this repository. Code was deve
 >. tqdm: 4.53.0  
 >. einops: 0.3.0  
 >. umap-learn: 0.5.1  
+In order to use the local modules in ray.tune actors, navigate to modules and install the packages locall with 'pip3 install -e .'
 
 # Run experiments
 Code for each experiment can be found in its own directory, e.g., './21_mnist_seed/'. Run 'python3 compute_baselines.py' to compute the baselines, and 'python3 simclr_ae_xyz.py' to train a neural representation and compute downstream tasks. 

@@ -1,0 +1,32 @@
+{
+    "layer": [
+        [
+            0,
+            "fc"
+        ],
+        [
+            2,
+            "fc"
+        ]
+    ],
+    "idx_start": [
+        0,
+        80
+    ],
+    "idx_length": [
+        80,
+        20
+    ],
+    "kernel_no": [
+        5,
+        4
+    ],
+    "kernel_size": [
+        16,
+        1
+    ],
+    "channels_in": [
+        1,
+        5
+    ]
+}

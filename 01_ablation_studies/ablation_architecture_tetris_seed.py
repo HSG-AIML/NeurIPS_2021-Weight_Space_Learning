@@ -119,7 +119,7 @@ def main():
         "config_keys": config_key_list,
     }
 
-    config["dataset::dump"] = Path('.','dataset.pt').absolute()
+    config["dataset::dump"] = Path('./../datasets/','dataset_01_ablations.pt').absolute()
     # make experiment dir
     output_dir.joinpath(experiment_name).mkdir(exist_ok=True)
 

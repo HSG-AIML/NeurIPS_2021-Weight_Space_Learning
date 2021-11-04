@@ -24,9 +24,10 @@ def main():
     ### set experiment resources ####
     print(f"torch.cuda.is_available: {torch.cuda.is_available()}")
     # ray init to limit memory and storage
-    gpus = 0
-    cpus = 2
-    cpus_per_trial = 1
+    gpus = 1
+    trials_per_gpu = 4
+    cpus_per_trial = 2
+    cpus = gpus * trials_per_gpu * cpus_per_trial
 
     # round down to maximize GPU usage
     gpu_fraction = (gpus * 100) // (cpus / cpus_per_trial) / 100
@@ -34,7 +35,7 @@ def main():
     print(f"resources_per_trial: {resources_per_trial}")
 
     ### configure experiment #########
-    experiment_name = "ablation_compression"
+    experiment_name = "tetris_seed"
     # set module parameters
     config = {}
     #
@@ -47,17 +48,12 @@ def main():
     config["model::N_attention_heads"] = 4
     config["model::dropout"] = 0.1
     config["model::attention_hidden_dim"] = 512
-    config["model::latent_dim"] = tune.grid_search([50, 33, 20])
+    config["model::latent_dim"] = 50
     config["model::encoding"] = "neuron"
     config["model::compression_token"] = True
     config["model::bottleneck"] = "linear"
 
-    config["model::encoding"] = "neuron"
     # configure vanilla AE
-    config["model::h_layers"] = 10
-    config["model::transition"] = "lin"
-    config["optim::vanilla_lr_factor"] = 3
-    # loss
     config["model::nlin"] = "leakyrelu"
     config["model::init_type"] = "kaiming_normal"
     # loss
@@ -72,7 +68,7 @@ def main():
     config["optim::lr"] = 1e-4
     config["optim::wd"] = 1e-9
     config["training::temperature"] = 0.1
-    config["training::gamma"] = tune.grid_search([1.0, 0.5, 0.0])
+    config["training::gamma"] = 0.5
 
     #
     config["optim::scheduler"] = "ReduceLROnPlateau"
@@ -83,7 +79,6 @@ def main():
     config["training::start_epoch"] = 1
     config["training::output_epoch"] = 50
     config["training::test_epochs"] = 10
-    # config["training::test_epochs"] = 1
     config["training::tf_out"] = 500
     config["training::checkpoint_dir"] = None
     config["training::tensorboard_dir"] = None
@@ -94,7 +89,7 @@ def main():
 
     # configure output path
     output_dir = PATH_ROOT
-
+    
     ###### Datasets ###########################################################################
     config["trainset::add_noise_input"] = 0.0
     config["trainset::add_noise_output"] = False
@@ -120,7 +115,7 @@ def main():
         "config_keys": config_key_list,
     }
 
-    config["dataset::dump"] = Path('./../datasets/','dataset_01_ablations.pt').absolute()
+    config["dataset::dump"] = Path('./../datasets/','dataset_11_tetris_seed.pt').absolute()
     # make experiment dir
     output_dir.joinpath(experiment_name).mkdir(exist_ok=True)
 

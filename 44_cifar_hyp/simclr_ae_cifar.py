@@ -20,68 +20,62 @@ from model_definitions.def_simclr_ae_trainable import SimCLR_AE_tune_trainable
 
 PATH_ROOT = Path("./")
 
+import json
+
+
 def main():
     ### set experiment resources ####
     print(f"torch.cuda.is_available: {torch.cuda.is_available()}")
     # ray init to limit memory and storage
-    gpus = 0
-    cpus = 2
-    cpus_per_trial = 1
+    cpus = 6
+    gpus = 1
 
     # round down to maximize GPU usage
+    cpus_per_trial = 6
     gpu_fraction = (gpus * 100) // (cpus / cpus_per_trial) / 100
     resources_per_trial = {"cpu": cpus_per_trial, "gpu": gpu_fraction}
     print(f"resources_per_trial: {resources_per_trial}")
 
     ### configure experiment #########
-    experiment_name = "ablation_compression"
+    experiment_name = "cifar"
     # set module parameters
     config = {}
-    #
-    config["resources"] = resources_per_trial
     ## configure model architecture
-    config["model::N_attention_blocks"] = 2
-    config["model::i_dim"] = 100
-    config["model::dim_attention_embedding"] = 256
+    config["model::N_attention_blocks"] = 4
+    config["model::i_dim"] = 4970
+    config["model::dim_attention_embedding"] = 512
     config["model::normalize"] = True
     config["model::N_attention_heads"] = 4
     config["model::dropout"] = 0.1
-    config["model::attention_hidden_dim"] = 512
-    config["model::latent_dim"] = tune.grid_search([50, 33, 20])
+    config["model::attention_hidden_dim"] = 1000
+    config["model::latent_dim"] = 1200
     config["model::encoding"] = "neuron"
     config["model::compression_token"] = True
     config["model::bottleneck"] = "linear"
-
-    config["model::encoding"] = "neuron"
-    # configure vanilla AE
-    config["model::h_layers"] = 10
-    config["model::transition"] = "lin"
-    config["optim::vanilla_lr_factor"] = 3
-    # loss
     config["model::nlin"] = "leakyrelu"
     config["model::init_type"] = "kaiming_normal"
     # loss
-    config["model::contrast"] = "simclr"
-    config["model::projection_head_layers"] = 3
+    config["model::contrast"] = "positive"
+    config["model::projection_head_layers"] = 4
     config["model::projection_head_batchnorm"] = True
-    config["model::projection_head_hdim"] = 50
-    config["model::projection_head_odim"] = 20
+    config["model::projection_head_hdim"] = 400
+    config["model::projection_head_odim"] = 50
 
     # configure optimizer
     config["optim::optimizer"] = "adam"
     config["optim::lr"] = 1e-4
     config["optim::wd"] = 1e-9
     config["training::temperature"] = 0.1
-    config["training::gamma"] = tune.grid_search([1.0, 0.5, 0.0])
+    config["training::gamma"] = 0.5
 
     #
     config["optim::scheduler"] = "ReduceLROnPlateau"
     config["optim::scheduler_mode"] = "min"
     config["optim::scheduler_factor"] = 0.3
 
-    config["training::epochs_train"] = 100
+    config["training::epochs_train"] = 25
     config["training::start_epoch"] = 1
-    config["training::output_epoch"] = 50
+    config["training::output_epoch"] = 5
     config["training::test_epochs"] = 10
     # config["training::test_epochs"] = 1
     config["training::tf_out"] = 500
@@ -94,14 +88,14 @@ def main():
 
     # configure output path
     output_dir = PATH_ROOT
-
+    
     ###### Datasets ###########################################################################
     config["trainset::add_noise_input"] = 0.0
     config["trainset::add_noise_output"] = False
     config["testset::add_noise_input"] = False
     config["testset::add_noise_output"] = False
-    config["trainset::permutations_number"] = 120
-    config["testset::permutations_number"] = 10         # does not affect downstream tasks
+    config["trainset::permutations_number"] = 25000
+    config["testset::permutations_number"] = 100         # does not affect downstream tasks
     config["trainset::erase_augment"] = {
         "p": 0.5,
         "scale": (0.02, 0.33),
@@ -112,17 +106,13 @@ def main():
     config["trainloader::workers"]=0                    # if you get torch multiprocessing errors, set those to 0
     config["testloader::workers"]=0                     # if you get torch multiprocessing errors, set those to 0
 
-    result_key_list = ["test_acc", "training_iteration", "ggap"]
-    config_key_list = [
-    ]
-    property_keys = {
-        "result_keys": result_key_list,
-        "config_keys": config_key_list,
-    }
-
-    config["dataset::dump"] = Path('./../datasets/','dataset_01_ablations.pt').absolute()
+    config["dataset::dump"] = Path('./../datasets/','dataset_44_cifar_hyp.pt').absolute()
     # make experiment dir
     output_dir.joinpath(experiment_name).mkdir(exist_ok=True)
+
+    fname = PATH_ROOT.joinpath("index_dict.json")
+    config["model::index_dict"] = json.load(fname.open("r"))
+
 
     ray.init(
         num_cpus=cpus, num_gpus=gpus,

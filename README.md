@@ -29,7 +29,19 @@ Several packages are necessary to run the code in this repository. Code was deve
 > einops: 0.3.0  
 > umap-learn: 0.5.1  
 
+## Modules
+The code for data preparation, representation learning and downstream task lies in `modules`. 
+`checkpoints_to_datasets` contains the data preparation and dataset classes. As the datasets are pre-computed, code there is only for reference and to prevent file loading errors.
+`model_definition` contains the code for the models in our model zoos, the representation learning code, as well as the downstream task learners.
+> `model_defition/def_net.py`: definition of MLP and CNN models for model zoos.
+> `model_defition/def_simlcr_ae_module.py`: definition of self-supervised representation learning models.
+> `model_defition/def_simlcr_ae_trainable.py`: ray.tune trainable wrapper around the representation learning models.
+> `model_defition/components`: components of the representation learning models, notably `def_loss.py` which defines the losses.
+> `model_defition/downstream_tasks`: contains a generic downstream task learner, as well as implementations of the two baseline models.
+
 In order to use the local modules in ray.tune actors, navigate to modules and install the packages locall with `pip3 install -e .`
+
+
 
 # Run experiments
 Code for each experiment can be found in its own directory, e.g., `./21_mnist_seed/`. Run `python3 compute_baselines.py` to compute the baselines, and `python3 simclr_ae_xyz.py` to train a neural representation and compute downstream tasks. 

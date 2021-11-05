@@ -18,16 +18,16 @@ Datasets 41, 42, 43 and 44 are our dataset format wrapped around the zoos from U
 
 # Dependencies and Packages
 Several packages are necessary to run the code in this repository. Code was developed and tested with the following versions:
-.> python: 3.8.8  
-.> torch: 1.9.0  
-.> cuda=11.3 (not necessary)
-.> ray: 1.4.0  
-.> json: 0.9.5  
-.> numpy: 1.20.1  
-.> pandas: 1.1.4  
-.> tqdm: 4.53.0  
-.> einops: 0.3.0  
-.> umap-learn: 0.5.1  
+> python: 3.8.8  
+> torch: 1.9.0  
+> cuda=11.3 (not necessary)
+> ray: 1.4.0  
+> json: 0.9.5  
+> numpy: 1.20.1  
+> pandas: 1.1.4  
+> tqdm: 4.53.0  
+> einops: 0.3.0  
+> umap-learn: 0.5.1  
 In order to use the local modules in ray.tune actors, navigate to modules and install the packages locall with 'pip3 install -e .'
 
 # Run experiments

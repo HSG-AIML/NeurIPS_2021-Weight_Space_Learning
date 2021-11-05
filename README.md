@@ -6,7 +6,6 @@ The figure below shows a schematic of the approach. In this repository, we provi
 ![Alt text](.figures/scheme_v2.png "Neural Representation Learning Scheme")
 
 
-
 # Datasets
 Datasets are available for download under https://zenodo.org/record/5645138. The code in this repository expects the datasets in `./datasets/` The shell script `download_datasets.sh` in `./datasets/` downloads all datasets.
 Dataset DOI: 10.5281/zenodo.5645138
@@ -15,6 +14,7 @@ To simplify usage, the datasets are precomputed binary files, not the raw data. 
 Dataset class defintions can be found in `/modules/checkpoints_to_datasets/`
 
 Datasets 41, 42, 43 and 44 are our dataset format wrapped around the zoos from Unterthiner et al, 2020 (https://github.com/google-research/google-research/tree/master/dnn_predict_accuracy)
+
 
 # Dependencies and Packages
 Several packages are necessary to run the code in this repository. Code was developed and tested with the following versions:
@@ -29,6 +29,7 @@ Several packages are necessary to run the code in this repository. Code was deve
 > einops: 0.3.0  
 > umap-learn: 0.5.1  
 
+
 # Modules
 The code for data preparation, representation learning and downstream task lies in `modules`. 
 `checkpoints_to_datasets` contains the data preparation and dataset classes. As the datasets are pre-computed, code there is only for reference and to prevent file loading errors.
@@ -39,12 +40,11 @@ The code for data preparation, representation learning and downstream task lies 
 > `model_defition/components`: components of the representation learning models, notably `def_loss.py` which defines the losses.   
 > `model_defition/downstream_tasks`: contains a generic downstream task learner, as well as implementations of the two baseline models.   
 
-In order to use the local modules in ray.tune actors, navigate to modules and install the packages locall with `pip3 install -e .`
-
+In order to use the local modules in ray.tune actors, navigate to `modules` and install the packages locall with `pip3 install -e .`
 
 
 # Run experiments
-Code for each experiment can be found in its own directory, e.g., `./21_mnist_seed/`. Run `python3 compute_baselines.py` to compute the baselines, and `python3 simclr_ae_xyz.py` to train a neural representation and compute downstream tasks. 
+Code for each experiment can be found in its own directory, e.g., `./21_mnist_seed/`. Run `python3 compute_baselines.py` to compute the baselines, and `python3 simclr_ae_xyz.py` to train a neural representation and compute downstream tasks.   
 Results of both baselines and downstream tasks are dropped in a subdirectory, e.g., `./21_mnist_seed/mnist_seed/` under `baseline_performance.json` and `results.json`.
 
 # Citation

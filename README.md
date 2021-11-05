@@ -14,6 +14,8 @@ Dataset DOI: 10.5281/zenodo.5645138
 To simplify usage, the datasets are precomputed binary files, not the raw data. Datasets are pytorch files containing a dictionary with training, validation and test sets. Train, validation and test sets are custom dataset classes which inherit from the standard torch dataset class.
 Dataset class defintions can be found in '/modules/checkpoints_to_datasets/'
 
+Datasets 41, 42, 43 and 44 are our dataset format wrapped around the zoos from Unterthiner et al, 2020 (https://github.com/google-research/google-research/tree/master/dnn_predict_accuracy)
+
 # Dependencies and Packages
 Several packages are necessary to run the code in this repository. Code was developed and tested with the following versions:
 >. python: 3.8.8  
@@ -31,3 +33,15 @@ In order to use the local modules in ray.tune actors, navigate to modules and in
 # Run experiments
 Code for each experiment can be found in its own directory, e.g., './21_mnist_seed/'. Run 'python3 compute_baselines.py' to compute the baselines, and 'python3 simclr_ae_xyz.py' to train a neural representation and compute downstream tasks. 
 Results of both baselines and downstream tasks are dropped in a subdirectory, e.g., './21_mnist_seed/mnist_seed/' under 'baseline_performance.json' and 'results.json'.
+
+# Citation
+If you want to cite our work, please use
+```
+@inproceedings{schurholt_self-supervised_2021,
+	address = {Sydney, Australia},
+	title = {Self-Supervised Representation Learning on Neural Network Weights for Model Characteristic Prediction},
+	author = {Schürholt, Konstantin and Kostadinov, Dimche and Borth, Damian},
+	booktitle = {Advances in Neural Information Processing Systems (NeurIPS 2021)},
+	year = {2021},
+}
+```

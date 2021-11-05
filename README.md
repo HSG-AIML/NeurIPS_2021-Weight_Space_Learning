@@ -1,3 +1,5 @@
+![Alt text](.figures/scheme_v2.png "Neural Representation Learning Scheme")
+
 # Introduction
 This is the repository to the NeurIPS 2021 paper "Self-Supervised Representation Learning on Neural Network Weights for Model Characteristic Prediction" (https://arxiv.org/abs/arXiv:2110.15288). 
 Here, we provide code to replicate the ablation studies and downstream tasks. 

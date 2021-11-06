@@ -5,6 +5,11 @@ The figure below shows a schematic of the approach. In this repository, we provi
 
 ![Alt text](.figures/scheme_v2.png "Neural Representation Learning Scheme")
 
+Figure: An overview of the proposed self-supervised representation learning approach. I. Populations of trained NNs form model zoos; each model is transformed in a vectorized form of its
+weights. II. Neural representations are learned from the model zoos using different augmentations,
+architectures, and Self-Supervised Learning tasks. III. Neural representations are evaluated on
+downstream tasks which predict model characteristics.
+
 
 # Datasets
 Datasets are available for download under https://zenodo.org/record/5645138. The code in this repository expects the datasets in `./datasets/` The shell script `download_datasets.sh` in `./datasets/` downloads all datasets.

@@ -1,4 +1,4 @@
-# checkpoints_to_datasets
+# Datasets Module
 
 This module contains functions to load pytorch checkpoints as datasets and augment model checkpoints.
 The base class for our own zoos can be found in dataset_base.py, and is extended in dataset_simclr.py.
